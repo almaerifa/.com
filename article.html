@@ -7,7 +7,7 @@
     <meta id="meta-description" name="description" content="المعرفة الثقافية">
     <meta id="meta-og-title" property="og:title" content="المعرفة الثقافية">
     <meta id="meta-og-description" property="og:description" content="المعرفة الثقافية">
-    <meta id="meta-og-image" property="og:image" content="https://g.top4top.io/p_3903k37401.png">
+    <meta id="meta-og-image" property="og:image" content="https://e.top4top.io/p_3907zjxcu0.png">
     <meta property="og:type" content="article">
     <meta name="theme-color" content="#000000">
     <link rel="icon" type="image/png" href="https://e.top4top.io/p_3907zjxcu0.png">
@@ -649,12 +649,13 @@
                     const art = snapshot.val();
                     const title = art.title || 'عنوان غير متاح';
                     document.title = title;
-                    const content = art.content || 'لا توجد تفاصيل لهذا المقال.';
 
-                    let videoHtml = '';
                     const videoUrls = Array.isArray(art.videoUrls) && art.videoUrls.length
                         ? art.videoUrls.filter(Boolean)
                         : (art.videoUrl ? [art.videoUrl] : []);
+
+                    // بناء الفيديو
+                    let videoHtml = '';
                     videoUrls.forEach((videoUrl, index) => {
                         const processedUrl = getEmbedUrl(videoUrl);
                         if (processedUrl.includes('youtube.com/embed')) {
@@ -663,16 +664,20 @@
                             videoHtml += `<div class="video-container"><video id="article-video-${index}" controls playsinline></video></div>`;
                         }
                     });
-                    const contentText = String(content).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
-                    const normalizedTitle = String(title).replace(/\s+/g, ' ').trim();
-                    const placeholderTexts = new Set(['لا توجد تفاصيل لهذا المقال.', 'المعرفة الثقافية', normalizedTitle]);
-                    const hasArticleText = contentText && !placeholderTexts.has(contentText);
-                    const isVideoOnly = videoUrls.length > 0 && !hasArticleText;
-                    const imageUrl = art.imageUrl || 'https://g.top4top.io/p_3903k37401.png';
-                    const mainImageHtml = isVideoOnly ? '' : `<img src="${imageUrl}" alt="${title}" class="main-img">`;
-                    const shareDescription = contentText.slice(0, 160);
-                    updateArticleShareMetadata(title, shareDescription, imageUrl);
 
+                    // المحتوى الحقيقي (بدون بدائل)
+                    const rawContent = String(art.content || '').trim();
+                    const contentText = rawContent.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+                    const hasRealText = contentText.length > 10;
+
+                    // الصورة الحقيقية (بدون بدائل)
+                    const rawImage = String(art.imageUrl || '').trim();
+                    const hasRealImage = rawImage.length > 0;
+
+                    const shareDescription = contentText.slice(0, 160) || title;
+                    updateArticleShareMetadata(title, shareDescription, rawImage);
+
+                    // صور إضافية
                     let extraImagesHtml = '';
                     if (art.extraImages) {
                         const imgs = art.extraImages.split(',');
@@ -687,11 +692,12 @@
                         }
                     }
 
+                    // بناء الصفحة — فقط العناصر الحقيقية، بدون أي بدائل
                     container.innerHTML = `
                         <h1>${title}</h1>
-                        ${mainImageHtml}
+                        ${hasRealImage ? `<img src="${rawImage}" alt="${title}" class="main-img">` : ''}
                         ${videoHtml}
-                        ${isVideoOnly ? '' : `<div class="content">${content}</div>`}
+                        ${hasRealText ? `<div class="content">${rawContent}</div>` : ''}
                         ${buildShareHtml(title)}
                         ${extraImagesHtml}
                     `;

@@ -2,38 +2,26 @@
   "name": "المعرفة الثقافية",
   "short_name": "المعرفة الثقافية",
   "description": "المعرفة الثقافية - قرآن وعلاج وطب نبوي وثقافة ومجربات وفوائد",
+  "lang": "ar",
+  "dir": "rtl",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#000000",
-  "theme_color": "#000000",
-  "dir": "rtl",
-  "lang": "ar",
+  "background_color": "#f4f4f4",
+  "theme_color": "#123456",
   "icons": [
     {
       "src": "https://k.top4top.io/p_3908m8yl70.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     },
     {
       "src": "https://l.top4top.io/p_39087ovd51.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "https://k.top4top.io/p_3908m8yl70.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "maskable"
-    },
-    {
-      "src": "https://l.top4top.io/p_39087ovd51.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "any maskable"
     }
-  ]
+  ],
+  "prefer_related_applications": false
 }
